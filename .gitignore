@@ -64,3 +64,6 @@ _bundles
 
 # generated documentation
 docs/
+
+# generated binaries
+bin/
