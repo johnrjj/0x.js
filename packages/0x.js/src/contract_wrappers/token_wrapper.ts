@@ -201,8 +201,12 @@ export class TokenWrapper extends ContractWrapper {
             throw new Error(ZeroExError.InsufficientBalanceForTransfer);
         }
 
+        const gas = await tokenContract.transfer.estimateGasAsync(toAddress, amountInBaseUnits, {
+            from: fromAddress,
+        });
         const txHash = await tokenContract.transfer.sendTransactionAsync(toAddress, amountInBaseUnits, {
             from: fromAddress,
+            gas,
         });
         return txHash;
     }
@@ -240,6 +244,12 @@ export class TokenWrapper extends ContractWrapper {
             throw new Error(ZeroExError.InsufficientBalanceForTransfer);
         }
 
+        const gas = await tokenContract.transferFrom.estimateGasAsync(
+            fromAddress, toAddress, amountInBaseUnits,
+            {
+                from: senderAddress,
+            },
+        );
         const txHash = await tokenContract.transferFrom.sendTransactionAsync(
             fromAddress, toAddress, amountInBaseUnits,
             {

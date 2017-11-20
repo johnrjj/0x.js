@@ -36,9 +36,14 @@ export class EtherTokenWrapper extends ContractWrapper {
         assert.assert(ethBalanceInWei.gte(amountInWei), ZeroExError.InsufficientEthBalanceForDeposit);
 
         const wethContract = await this._getEtherTokenContractAsync();
+        const gas = await wethContract.deposit.estimateGasAsync({
+            from: depositor,
+            value: amountInWei,
+        });
         const txHash = await wethContract.deposit.sendTransactionAsync({
             from: depositor,
             value: amountInWei,
+            gas,
         });
         return txHash;
     }
@@ -58,8 +63,12 @@ export class EtherTokenWrapper extends ContractWrapper {
         assert.assert(WETHBalanceInBaseUnits.gte(amountInWei), ZeroExError.InsufficientWEthBalanceForWithdrawal);
 
         const wethContract = await this._getEtherTokenContractAsync();
+        const gas = await wethContract.withdraw.estimateGasAsync(amountInWei, {
+            from: withdrawer,
+        });
         const txHash = await wethContract.withdraw.sendTransactionAsync(amountInWei, {
             from: withdrawer,
+            gas,
         });
         return txHash;
     }

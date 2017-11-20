@@ -145,10 +145,14 @@ export interface TokenContract extends Web3.ContractInstance {
     transfer: {
         sendTransactionAsync: (toAddress: string, amountInBaseUnits: BigNumber,
                                txOpts?: TxOpts) => Promise<string>;
+        estimateGasAsync: (toAddress: string, amountInBaseUnits: BigNumber,
+                           txOpts?: TxOpts) => Promise<number>;
     };
     transferFrom: {
         sendTransactionAsync: (fromAddress: string, toAddress: string, amountInBaseUnits: BigNumber,
                                txOpts?: TxOpts) => Promise<string>;
+        estimateGasAsync: (fromAddress: string, toAddress: string, amountInBaseUnits: BigNumber,
+                           txOpts?: TxOpts) => Promise<number>;
     };
     approve: {
         sendTransactionAsync: (spenderAddress: string, amountInBaseUnits: BigNumber,
@@ -182,9 +186,11 @@ export interface TokenRegistryContract extends Web3.ContractInstance {
 export interface EtherTokenContract extends Web3.ContractInstance {
     deposit: {
         sendTransactionAsync: (txOpts: TxOpts) => Promise<string>;
+        estimateGasAsync: (txOpts: TxOpts) => Promise<number>;
     };
     withdraw: {
         sendTransactionAsync: (amount: BigNumber, txOpts: TxOpts) => Promise<string>;
+        estimateGasAsync: (amount: BigNumber, txOpts: TxOpts) => Promise<number>;
     };
 }
 
