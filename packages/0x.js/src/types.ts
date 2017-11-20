@@ -151,8 +151,10 @@ export interface TokenContract extends Web3.ContractInstance {
                                txOpts?: TxOpts) => Promise<string>;
     };
     approve: {
-        sendTransactionAsync: (proxyAddress: string, amountInBaseUnits: BigNumber,
+        sendTransactionAsync: (spenderAddress: string, amountInBaseUnits: BigNumber,
                                txOpts?: TxOpts) => Promise<string>;
+        estimateGasAsync: (spenderAddress: string, amountInBaseUnits: BigNumber,
+                           txOpts?: TxOpts) => Promise<number>;
     };
 }
 

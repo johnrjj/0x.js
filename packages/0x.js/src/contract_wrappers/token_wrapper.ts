@@ -77,7 +77,14 @@ export class TokenWrapper extends ContractWrapper {
         // on testrpc. Probably related to https://github.com/ethereumjs/testrpc/issues/294
         // TODO: Debug issue in testrpc and submit a PR, then remove this hack
         const networkIdIfExists = await this._web3Wrapper.getNetworkIdIfExistsAsync();
-        const gas = networkIdIfExists === constants.TESTRPC_NETWORK_ID ? ALLOWANCE_TO_ZERO_GAS_AMOUNT : undefined;
+        let gas;
+        if (networkIdIfExists === constants.TESTRPC_NETWORK_ID) {
+            gas = ALLOWANCE_TO_ZERO_GAS_AMOUNT;
+        } else {
+            gas = await tokenContract.approve.estimateGasAsync(spenderAddress, amountInBaseUnits, {
+                from: ownerAddress,
+            });
+        }
         const txHash = await tokenContract.approve.sendTransactionAsync(spenderAddress, amountInBaseUnits, {
             from: ownerAddress,
             gas,
